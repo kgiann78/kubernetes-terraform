@@ -1,8 +1,8 @@
 resource "kubernetes_namespace" "openfaas" {
   metadata {
     labels = {
-      role = "openfaas-system"
-      access = "openfaas-system"
+      role            = "openfaas-system"
+      access          = "openfaas-system"
       istio-injection = "enabled"
     }
 
@@ -13,7 +13,7 @@ resource "kubernetes_namespace" "openfaas" {
 resource "kubernetes_namespace" "openfaas-fn" {
   metadata {
     labels = {
-      role = "openfaas-fn"
+      role            = "openfaas-fn"
       istio-injection = "enabled"
     }
 
@@ -28,17 +28,17 @@ data "helm_repository" "openfaas" {
 
 resource "helm_release" "openfaas" {
   name       = "openfaas"
-  repository = data.helm_repository.openfaas.metadata[0].name
+  repository = "data.helm_repository.openfaas.metadata[0].name"
   chart      = "openfaas/openfaas"
   namespace  = "openfaas"
-  
+
   set {
-      name  = "functionNamespace"
-      value = "openfaas-fn"
+    name  = "functionNamespace"
+    value = "openfaas-fn"
   }
 
   set {
-      name  = "generateBasicAuth"
-      value = "false"
+    name  = "generateBasicAuth"
+    value = "false"
   }
 }

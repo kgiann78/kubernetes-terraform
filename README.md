@@ -30,17 +30,23 @@ You can avoid this if you use the instructions in the Terraform Kubernetes provi
 
 ## Notes
 
-At any point you can run `terraform init` to download the providers and check if anything is good to go. When all scripts are ready, run the `start` script to fire-up the installation.
+* At any point you can run `terraform init` to download the providers and check if anything is good to go. When all scripts are ready, run the `start` script to fire-up the installation.
+* In the `helm_release` resource, we are using the setting `generateBasicAuth=false`. This will install `openfaas` without creating the basic authentication. Instead we will create custom credentials and will store them as secrets:
 
+        # generate a random password	
+        PASSWORD=$(head -c 12 /dev/urandom | shasum| cut -d' ' -f1)	
+        kubectl -n openfaas create secret generic basic-auth \
+        --from-literal=basic-auth-user=admin \
+        --from-literal=basic-auth-password="$PASSWORD"	
 
-In the `helm_release` resource, we are using the setting `generateBasicAuth=false`. This will install `openfaas` without creating the basic authentication. 
+    This can also pass into the `terraform` scripts in the future.
 
-Instead we will create custom credentials and will store them as secrets:
+* In case we need to edit the values for the terraform chart we can download them for inspection:
 
-    # generate a random password	
-    PASSWORD=$(head -c 12 /dev/urandom | shasum| cut -d' ' -f1)	
-    kubectl -n openfaas create secret generic basic-auth \
-    --from-literal=basic-auth-user=admin \
-    --from-literal=basic-auth-password="$PASSWORD"	
+        helm inspect values openfaas/openfaas > openfaas_values.yml
+    
+    After editing values we can add them in the openfaas helm_release resource:
 
-This can also pass into the `terraform` scripts in the future.
+        values = [
+            "${file("${VALUES_PATH}/openfaas_values.yml")}"
+        ]
