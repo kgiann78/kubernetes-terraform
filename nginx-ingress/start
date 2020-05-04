@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Config Initialization
+terraform init -reconfigure
+# Action check
+terraform plan -refresh=true -out "terraform.tfplan"
+# Launch action
+terraform apply terraform.tfplan
+
+#terraform destroy
+#terraform refresh
