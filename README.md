@@ -30,6 +30,7 @@ You can avoid this if you use the instructions in the Terraform Kubernetes provi
 
 ## Notes
 
+* In `terraform.tfvars` we can add env vars to use in scripts. Copy `terraform.tfvars.sample` to `terraform.tfvars` and update the values to use in variables or other resources.
 * At any point you can run `terraform init` to download the providers and check if anything is good to go. When all scripts are ready, run the `start` script to fire-up the installation.
 * In the `helm_release` resource, we are using the setting `generateBasicAuth=false`. This will install `openfaas` without creating the basic authentication. Instead we will create custom credentials and will store them as secrets:
 

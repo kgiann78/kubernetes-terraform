@@ -1,0 +1,2 @@
+token_example = "a token that we want to use"
+public_key   = "public ssh key"
