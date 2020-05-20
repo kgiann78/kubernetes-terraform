@@ -1,3 +1,9 @@
+provider "kubernetes" {}
+
+provider "helm" {
+  kubernetes {}
+}
+
 resource "kubernetes_namespace" "openfaas" {
   metadata {
     labels = {
@@ -40,5 +46,14 @@ resource "helm_release" "openfaas" {
   set {
     name  = "generateBasicAuth"
     value = "false"
+  }
+
+  values = [
+    "${file(var.openfaas_staging_ingress_values)}"
+  ]
+
+  set {
+    name  = "reuse_values"
+    value = "true"
   }
 }
