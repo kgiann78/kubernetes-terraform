@@ -3,5 +3,5 @@ variable "openfaas_staging_ingress_values" {
 }
 
 variable "openfaas_prod_ingress_values" {
-  default = "../tls-certificates/openfaas/openfaas_prod_ingress_values.yaml"
+  default = "../tls-certificates/openfaas/openfaas_ingress_values_le_traefik_prod.yaml"
 }

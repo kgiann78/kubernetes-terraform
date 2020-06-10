@@ -45,11 +45,11 @@ resource "helm_release" "openfaas" {
 
   set {
     name  = "generateBasicAuth"
-    value = "false"
+    value = "true"
   }
 
   values = [
-    "${file(var.openfaas_staging_ingress_values)}"
+    "${file(var.openfaas_prod_ingress_values)}"
   ]
 
   set {

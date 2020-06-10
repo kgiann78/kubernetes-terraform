@@ -32,7 +32,15 @@ You can avoid this if you use the instructions in the Terraform Kubernetes provi
 
 * In `terraform.tfvars` we can add env vars to use in scripts. Copy `terraform.tfvars.sample` to `terraform.tfvars` and update the values to use in variables or other resources.
 * At any point you can run `terraform init` to download the providers and check if anything is good to go. When all scripts are ready, run the `start` script to fire-up the installation.
-* In the `helm_release` resource, we are using the setting `generateBasicAuth=false`. This will install `openfaas` without creating the basic authentication. Instead we will create custom credentials and will store them as secrets:
+* K3s is coming with traefik ingress controller "pre-installed" so there are templates and scripts for issuers and ingress values made for traefik. In any other installation (without traefik)
+you can use plain ol' nginx ingress controller (look into the respective repository).
+* In the `helm_release` resource, there are two ways to setup basic Authentication. One is to set `generateBasicAuth=true`. This will create basic auth credentials. Retrieve the OpenFaaS credentials with:
+
+        PASSWORD=$(kubectl -n openfaas get secret basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode) && \
+echo "OpenFaaS admin password: $PASSWORD"
+
+* The other way is in the `helm_release` resource, to use the setting `generateBasicAuth=false`. This will install `openfaas` without creating the basic authentication. 
+  Before executing the script we should create the credentials and store them as secrets, because openfaas gateway will not be able to start.
 
         # generate a random password	
         PASSWORD=$(head -c 12 /dev/urandom | shasum| cut -d' ' -f1)	
@@ -41,6 +49,7 @@ You can avoid this if you use the instructions in the Terraform Kubernetes provi
         --from-literal=basic-auth-password="$PASSWORD"	
 
     This can also pass into the `terraform` scripts in the future.
+
 
 * In case we need to edit the values for the terraform chart we can download them for inspection:
 
