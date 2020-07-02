@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+DIR=$(dirname $0)
+cd $DIR
+
+echo "Recreating aws-secrets"
+kubectl delete -n MY_NAMESPACE_PLEASE_CHANGE_ME -f ./aws-secrets.yml || true
+kubectl create -n MY_NAMESPACE_PLEASE_CHANGE_ME -f ./aws-secrets.yml
+
+echo "Recreating aws-role"
+kubectl delete -n MY_NAMESPACE_PLEASE_CHANGE_ME -f ./aws-role.yml || true
+kubectl create -n MY_NAMESPACE_PLEASE_CHANGE_ME -f ./aws-role.yml
+
+echo "Recreating infrastructure aws-ecr-cron"
+kubectl delete -n MY_NAMESPACE_PLEASE_CHANGE_ME -f ./ecr-cron.yml || true
+kubectl create -n MY_NAMESPACE_PLEASE_CHANGE_ME -f ./ecr-cron.yml
