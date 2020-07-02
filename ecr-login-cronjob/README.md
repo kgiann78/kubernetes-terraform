@@ -29,17 +29,17 @@ An example for openfaas is already there. What you will not find in the openfaas
          ecr-cron.yml
 
 3. Go into the new directory
-4. Rename aws-secret.yml.template to aws-secret.yml
-5. Edit the aws-role.yml file and set the name to both ClusterRole and ClusterRoleBinding configurations. ie. name: openfaas-aws-authorization-cluster-role. 
+4. Rename `aws-secret.yml.template` to `aws-secret.yml`
+5. Edit the `aws-role.yml` file and set the name to both ClusterRole and ClusterRoleBinding configurations. ie. name: openfaas-aws-authorization-cluster-role. 
 This is necessary because ClusterRole and ClusterRoleBinding are not hiding behind a namespace and should have unique names.
-6. Edit the aws-secrets.yml file and set your AWS credentials (as base64 values)
-7. Edit the ecr-cron.yml and change the namespaces, the docker image to your aws-kube.
-8. Rename aws.sh.template to aws.sh and make it an executable. 
+6. Edit the `aws-secrets.yml` file and set your AWS credentials (as base64 values)
+7. Edit the `ecr-cron.yml` and change the namespaces, the docker image to your aws-kube.
+8. Rename `aws.sh.template` to `aws.sh` and make it an executable. 
 
         chmod +x aws.sh
 
-9. Edit aws.sh and set the namespace
-10. Run the aws.sh 
+9. Edit `aws.sh` and set the namespace
+10. Run the `aws.sh` 
 
         ./aws.sh
 
